@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sci-Fi Terminal Emulator</title>
   <style>
     body {
@@ -39,19 +39,35 @@
   <div id="terminal"></div>
   <div id="input-line">
     <span id="prompt">user@cyberdeck:~$</span>
-    <input type="text" id="cmd" autofocus />
+    <input type="text" id="cmd" autofocus autocomplete="off" />
   </div>
 
   <script>
     const terminal = document.getElementById("terminal");
     const cmdInput = document.getElementById("cmd");
 
+    // Prepare 1000 shuffled output lines for long commands
+    const longOutputLines = Array.from({ length: 1000 }, (_, i) => `> Process line ${i + 1} completed.`);
+    longOutputLines.sort(() => Math.random() - 0.5);
+    const longOutput = longOutputLines.join("\n");
+
+    let hackTypingTimeout = null;
+    let hackIndex = 0;
+
     const fakeResponses = {
-      help: "Available commands: help, scan, decrypt, access, hack, clear",
-      scan: "Scanning for nearby networks...\n- Found: CYBERNET_2049\n- Found: DEEPNET_NODE",
-      decrypt: "Decrypting...\n> **********\n> Access granted.",
-      access: "Accessing mainframe...\n> WELCOME, AGENT X.",
-      hack: "Initiating breach...\n> Firewall bypassed\n> Root access obtained.",
+      help: "Available commands:\n  help, scan, decrypt, access, hack, clear, trace, ping, override, shutdown, locate, echo, compile, debug, deploy, transmit, exit",
+      decrypt: `Decrypting...\n> **********\n> Access granted.\n\nAnalyzing decrypted data...\n> File 001: Project Genesis\n> File 002: Agent Locations\n> File 003: Blacksite Coordinates`,
+      access: `Accessing mainframe...\n> WELCOME, AGENT X.\n\n> MAINFRAME OPTIONS:\n  1. Initiate lockdown\n  2. Retrieve asset intel\n  3. Trigger memory wipe\n\nUse command 'option <number>' to proceed.`,
+      trace: `Tracing connection route...\n${longOutput}`,
+      ping: `Sending ping packets...\n${longOutput}`,
+      override: `Overriding security protocols...\n${longOutput}`,
+      shutdown: `Shutting down remote node...\n${longOutput}`,
+      locate: `Locating encrypted beacon...\n${longOutput}`,
+      echo: `Echo test...\n${longOutput}`,
+      compile: `Compiling system package...\n${longOutput}`,
+      debug: `Initiating debug sequence...\n${longOutput}`,
+      deploy: `Deploying stealth drone unit...\n${longOutput}`,
+      transmit: `Transmitting data payload...\n${longOutput}`,
       clear: ""
     };
 
@@ -60,19 +76,157 @@
       terminal.scrollTop = terminal.scrollHeight;
     }
 
-    cmdInput.addEventListener("keydown", function(e) {
+    function typeHackOutput() {
+      if (hackIndex >= longOutputLines.length) {
+        hackTypingTimeout = null;
+        appendOutput("> Hack process complete.");
+        appendOutput("> Extracted Password: XJ93-7LPQ-2ZKW-4MNV");
+        return;
+      }
+      appendOutput(longOutputLines[hackIndex]);
+      hackIndex++;
+      hackTypingTimeout = setTimeout(typeHackOutput, 10); // faster speed
+    }
+
+    function stopHackTyping() {
+      if (hackTypingTimeout !== null) {
+        clearTimeout(hackTypingTimeout);
+        hackTypingTimeout = null;
+        appendOutput("> Hack process terminated.");
+      } else {
+        appendOutput("> No hack process running.");
+      }
+    }
+
+    function simulateScan() {
+      appendOutput("Scanning for nearby networks...");
+      const codeStream = [
+        "> Scanning infrared sensor arrays...",
+        "> Calibrating quantum frequency modulators...",
+        "> Decrypting encrypted comm channels...",
+        "> Synchronizing AI core nodes...",
+        "> Validating security certificates...",
+        "> Parsing sensor telemetry data...",
+        "> Initializing stealth protocol override...",
+        "> Detecting anomalous power signatures...",
+        "> Mapping satellite uplink nodes...",
+        "> Cross-referencing biometric logs...",
+        "> Analyzing thermal imaging feeds...",
+        "> Performing system integrity checks...",
+        "> Checking firewall breach attempts...",
+        "> Reviewing encrypted data packets...",
+        "> Authenticating multi-factor credentials...",
+        "> Updating intrusion detection algorithms...",
+        "> Launching passive monitoring agents...",
+        "> Running diagnostics on neural nets...",
+        "> Collecting encrypted blacksite locations...",
+        "> Tracing unauthorized access points...",
+        "> Synchronizing with satellite arrays...",
+        "> Running entropy tests on data streams...",
+        "> Assessing threat levels from external nodes...",
+        "> Logging anomalous network traffic...",
+        "> Recalibrating sensor arrays...",
+        "> Updating cryptographic keys...",
+        "> Initiating AI behavior analysis module...",
+        "> Capturing electromagnetic interference patterns...",
+        "> Reconstructing fragmented data clusters...",
+        "> Initiating quantum encryption handshake...",
+        "> Activating stealth drone surveillance...",
+        "> Harvesting signal metadata...",
+        "> Running signature verification processes...",
+        "> Syncing with global cyber defense grid...",
+        "> Analyzing malware footprints...",
+        "> Performing risk assessment calculations...",
+        "> Monitoring node uptime statistics...",
+        "> Validating packet source authenticity...",
+        "> Extracting firmware version details...",
+        "> Reviewing command and control channels...",
+        "> Encrypting temporary communication buffers...",
+        "> Running anti-tamper protocols...",
+        "> Tracking mobile node movement patterns...",
+        "> Collating system alert logs...",
+        "> Assessing network latency issues...",
+        "> Deploying automated countermeasures...",
+        "> Reviewing biometric access attempts...",
+        "> Reconstructing encrypted message fragments...",
+        "> Calculating signal-to-noise ratios...",
+        "> Performing cryptanalysis on intercepted keys...",
+        "> Running AI-driven anomaly detection...",
+        "> Cross-referencing IP address blacklists...",
+        "> Verifying hardware security modules...",
+        "> Logging completed security scans...",
+        "> Preparing system status report...",
+        "> Uploading scan results to central database...",
+        "> Locking down vulnerable access points...",
+        "> Initiating clean-up of temporary files...",
+        "> Rebooting subsystem interfaces...",
+        "> Validating data redundancy protocols...",
+        "> Performing hardware diagnostics...",
+        "> Monitoring power consumption rates...",
+        "> Mapping cyber terrain topology...",
+        "> Encrypting all outgoing transmissions...",
+        "> Verifying secure shell tunnels...",
+        "> Activating fallback communication protocols...",
+        "> Collecting logs from remote sensors...",
+        "> Running firmware integrity verifications...",
+        "> Compiling threat intelligence reports...",
+        "> Deploying counter-intrusion scripts...",
+        "> Updating AI core heuristics...",
+        "> Resetting node encryption cycles...",
+        "> Checking for hardware trojans...",
+        "> Parsing biometric override signals...",
+        "> Running software patch validations...",
+        "> Simulating breach response scenarios...",
+        "> Generating secure encryption keys...",
+        "> Auditing system access history...",
+        "> Cross-checking with global threat databases...",
+        "> Updating firewall rule sets...",
+        "> Collecting telemetry from stealth units...",
+        "> Initiating emergency protocol drills...",
+        "> Authenticating agent credentials...",
+        "> Monitoring external sensor grids...",
+        "> Running network traffic optimization...",
+        "> Encrypting backup data stores...",
+        "> Reviewing quantum key distribution logs...",
+        "> Compiling AI behavioral analytics...",
+        "> Sending final scan confirmation...",
+        "> Scan complete.",
+        "> Decryption Key Found: 4F9A-7B23-C1DE-5E7F"
+      ];
+
+      let scanIndex = 0;
+      const interval = setInterval(() => {
+        if (scanIndex < codeStream.length) {
+          appendOutput(codeStream[scanIndex]);
+          scanIndex++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 7);
+    }
+
+    cmdInput.addEventListener("keydown", function (e) {
       if (e.key === "Enter") {
-        const command = cmdInput.value.trim();
+        const command = cmdInput.value.trim().toLowerCase();
         appendOutput(`user@cyberdeck:~$ ${command}`);
 
-        if (fakeResponses[command]) {
+        if (command === "scan") {
+          setTimeout(simulateScan, 500);
+        } else if (command === "hack") {
+          if (hackTypingTimeout === null) {
+            hackIndex = 0;
+            typeHackOutput();
+          } else {
+            appendOutput("> Hack process is already running.");
+          }
+        } else if (command === "exit") {
+          stopHackTyping();
+        } else if (command === "clear") {
+          terminal.innerText = "";
+        } else if (fakeResponses[command]) {
           appendOutput(fakeResponses[command]);
         } else {
           appendOutput(`Command not found: ${command}`);
-        }
-
-        if (command === "clear") {
-          terminal.innerText = "";
         }
 
         cmdInput.value = "";
