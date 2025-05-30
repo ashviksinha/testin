@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sci-Fi Terminal Emulator</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 20px;
+      overflow: hidden;
+    }
+    #terminal {
+      width: 100%;
+      height: 90vh;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    #input-line {
+      display: flex;
+    }
+    #prompt {
+      margin-right: 5px;
+    }
+    #cmd {
+      background: none;
+      border: none;
+      color: #00ff00;
+      font-family: inherit;
+      font-size: 1em;
+      outline: none;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal"></div>
+  <div id="input-line">
+    <span id="prompt">user@cyberdeck:~$</span>
+    <input type="text" id="cmd" autofocus />
+  </div>
+
+  <script>
+    const terminal = document.getElementById("terminal");
+    const cmdInput = document.getElementById("cmd");
+
+    const fakeResponses = {
+      help: "Available commands: help, scan, decrypt, access, hack, clear",
+      scan: "Scanning for nearby networks...\n- Found: CYBERNET_2049\n- Found: DEEPNET_NODE",
+      decrypt: "Decrypting...\n> **********\n> Access granted.",
+      access: "Accessing mainframe...\n> WELCOME, AGENT X.",
+      hack: "Initiating breach...\n> Firewall bypassed\n> Root access obtained.",
+      clear: ""
+    };
+
+    function appendOutput(text) {
+      terminal.innerText += text + "\n";
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    cmdInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        const command = cmdInput.value.trim();
+        appendOutput(`user@cyberdeck:~$ ${command}`);
+
+        if (fakeResponses[command]) {
+          appendOutput(fakeResponses[command]);
+        } else {
+          appendOutput(`Command not found: ${command}`);
+        }
+
+        if (command === "clear") {
+          terminal.innerText = "";
+        }
+
+        cmdInput.value = "";
+      }
+    });
+  </script>
+</body>
+</html>
